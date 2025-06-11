@@ -16,8 +16,8 @@ com/github/raftimpl/raft/example/server/service/impl/ExampleServiceImpl.class
 com/github/raftimpl/raft/example/server/service/ExampleProto.class
 com/github/raftimpl/raft/example/client/ClientMain_Test.class
 com/github/raftimpl/raft/example/server/service/ExampleProto$GetResponse$1.class
-com/github/raftimpl/raft/example/server/service/ExampleProto$GetRequest$Builder.class
 com/github/raftimpl/raft/example/server/service/ExampleService.class
+com/github/raftimpl/raft/example/server/service/ExampleProto$GetRequest$Builder.class
 com/github/raftimpl/raft/example/client/ConcurrentClientMain.class
 com/github/raftimpl/raft/example/server/service/ExampleProto$GetResponseOrBuilder.class
 com/github/raftimpl/raft/example/server/service/ExampleProto$GetResponse$Builder.class

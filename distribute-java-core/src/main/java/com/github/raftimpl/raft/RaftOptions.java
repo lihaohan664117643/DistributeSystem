@@ -40,4 +40,43 @@ public class RaftOptions {
 
     // raft的log和snapshot父目录，绝对路径
     private String dataDir = System.getProperty("com.github.raftimpl.raft.data.dir");
+
+    private String dataPath = null;
+
+    public String getDataDir() {
+        return this.dataPath;
+    }
+
+    public void setDataDir(String data_path) {
+        this.dataPath = data_path;
+
+    }
+
+    public void setSnapshotMinLogSize(int snapshotMinLogSize) {
+        this.snapshotMinLogSize = snapshotMinLogSize;
+    }
+
+    public int getSnapshotMinLogSize() {
+        return this.snapshotMinLogSize;
+    }
+
+    public void setSnapshotPeriodSeconds(int snapshotPeriodSeconds) {
+        this.snapshotPeriodSeconds = snapshotPeriodSeconds;
+    }
+
+    public int getSnapshotPeriodSeconds() {
+        return this.snapshotPeriodSeconds;
+    }
+
+    public void setMaxSegmentFileSize(int maxSegmentFileSize) {
+        this.maxSegmentFileSize = maxSegmentFileSize;
+    }
+
+    public int getMaxSegmentFileSize() {
+        return this.maxSegmentFileSize;
+    }
+
+    public int getRaftConsensusThreadNum() {
+        return this.raftConsensusThreadNum;
+    }
 }
