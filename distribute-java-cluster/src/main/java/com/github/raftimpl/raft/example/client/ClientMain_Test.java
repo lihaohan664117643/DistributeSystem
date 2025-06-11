@@ -1,5 +1,7 @@
 package com.github.raftimpl.raft.example.client;
 
+import java.io.Console;
+
 import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
 import com.github.raftimpl.raft.example.server.service.ExampleProto;
@@ -13,7 +15,7 @@ public class ClientMain_Test {
                 // "list://192.168.91.134:8051,192.168.91.134:8052,192.168.91.134:8053";
                 String ipport = "list://127.0.0.1:8053";
                 String key = "username123";
-                String value = "HAOHAN";
+                String value = "test2";
 
                 // init rpc client
                 RpcClient rpcClient = new RpcClient(ipport);
@@ -22,6 +24,7 @@ public class ClientMain_Test {
                 final JsonFormat jsonFormat = new JsonFormat();
 
                 // set
+                System.out.print("I am here");
                 if (value != null) {
                         ExampleProto.SetRequest setRequest = ExampleProto.SetRequest.newBuilder()
                                         .setKey(key).setValue(value).build();
@@ -30,8 +33,10 @@ public class ClientMain_Test {
                                         key, value, jsonFormat.printToString(setResponse));
                 } else {
                         // get
+                        System.out.println("*************");
                         ExampleProto.GetRequest getRequest = ExampleProto.GetRequest.newBuilder()
                                         .setKey(key).build();
+                        System.out.println("*************");
                         ExampleProto.GetResponse getResponse = exampleService.get(getRequest);
                         System.out.printf("get request, key=%s, response=%s\n",
                                         key, jsonFormat.printToString(getResponse));

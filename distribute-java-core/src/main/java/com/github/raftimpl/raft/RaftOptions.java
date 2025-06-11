@@ -41,14 +41,14 @@ public class RaftOptions {
     // raft的log和snapshot父目录，绝对路径
     private String dataDir = System.getProperty("com.github.raftimpl.raft.data.dir");
 
-    private String dataPath = null;
+    // private String dataPath = null;
 
     public String getDataDir() {
-        return this.dataPath;
+        return this.dataDir;
     }
 
     public void setDataDir(String data_path) {
-        this.dataPath = data_path;
+        this.dataDir = data_path;
 
     }
 
@@ -78,5 +78,140 @@ public class RaftOptions {
 
     public int getRaftConsensusThreadNum() {
         return this.raftConsensusThreadNum;
+    }
+
+    public int getElectionTimeoutMilliseconds() {
+        /**
+         * Gets the election timeout in milliseconds.
+         *
+         * @return the election timeout in milliseconds
+         */
+        return this.electionTimeoutMilliseconds;
+    }
+
+    public void setElectionTimeoutMilliseconds(int electionTimeoutMilliseconds) {
+        /**
+         * Sets the election timeout in milliseconds.
+         *
+         * @param electionTimeoutMilliseconds the election timeout in milliseconds
+         */
+        this.electionTimeoutMilliseconds = electionTimeoutMilliseconds;
+    }
+
+    public int getHeartbeatPeriodMilliseconds() {
+        /**
+         * Gets the heartbeat period in milliseconds.
+         *
+         * @return the heartbeat period in milliseconds
+         */
+        return this.heartbeatPeriodMilliseconds;
+    }
+
+    public void setHeartbeatPeriodMilliseconds(int heartbeatPeriodMilliseconds) {
+        /**
+         * Sets the heartbeat period in milliseconds.
+         *
+         * @param heartbeatPeriodMilliseconds the heartbeat period in milliseconds
+         */
+        this.heartbeatPeriodMilliseconds = heartbeatPeriodMilliseconds;
+    }
+
+    public int getMaxSnapshotBytesPerRequest() {
+        /**
+         * Gets the maximum snapshot bytes per request.
+         *
+         * @return the maximum snapshot bytes per request
+         */
+        return this.maxSnapshotBytesPerRequest;
+    }
+
+    public void setMaxSnapshotBytesPerRequest(int maxSnapshotBytesPerRequest) {
+        /**
+         * Sets the maximum snapshot bytes per request.
+         *
+         * @param maxSnapshotBytesPerRequest the maximum snapshot bytes per request
+         */
+        this.maxSnapshotBytesPerRequest = maxSnapshotBytesPerRequest;
+    }
+
+    public int getMaxLogEntriesPerRequest() {
+        /**
+         * Gets the maximum log entries per request.
+         *
+         * @return the maximum log entries per request
+         */
+        return this.maxLogEntriesPerRequest;
+    }
+
+    public void setMaxLogEntriesPerRequest(int maxLogEntriesPerRequest) {
+        /**
+         * Sets the maximum log entries per request.
+         *
+         * @param maxLogEntriesPerRequest the maximum log entries per request
+         */
+        this.maxLogEntriesPerRequest = maxLogEntriesPerRequest;
+    }
+
+    public long getCatchupMargin() {
+        /**
+         * Gets the catchup margin.
+         *
+         * @return the catchup margin
+         */
+        return this.catchupMargin;
+    }
+
+    public void setCatchupMargin(long catchupMargin) {
+        /**
+         * Sets the catchup margin.
+         *
+         * @param catchupMargin the catchup margin
+         */
+        this.catchupMargin = catchupMargin;
+    }
+
+    public long getMaxAwaitTimeout() {
+        /**
+         * Gets the maximum await timeout in milliseconds.
+         *
+         * @return the maximum await timeout in milliseconds
+         */
+        return this.maxAwaitTimeout;
+    }
+
+    public void setMaxAwaitTimeout(long maxAwaitTimeout) {
+        /**
+         * Sets the maximum await timeout in milliseconds.
+         *
+         * @param maxAwaitTimeout the maximum await timeout in milliseconds
+         */
+        this.maxAwaitTimeout = maxAwaitTimeout;
+    }
+
+    public void setRaftConsensusThreadNum(int raftConsensusThreadNum) {
+        /**
+         * Sets the number of threads for raft consensus operations.
+         *
+         * @param raftConsensusThreadNum the number of threads
+         */
+        this.raftConsensusThreadNum = raftConsensusThreadNum;
+    }
+
+    public boolean isAsyncWrite() {
+        /**
+         * Checks if async write is enabled.
+         *
+         * @return true if async write is enabled, false otherwise
+         */
+        return this.asyncWrite;
+    }
+
+    public void setAsyncWrite(boolean asyncWrite) {
+        /**
+         * Sets whether async write is enabled.
+         *
+         * @param asyncWrite true to enable async write, false otherwise
+         */
+        this.asyncWrite = asyncWrite;
     }
 }
