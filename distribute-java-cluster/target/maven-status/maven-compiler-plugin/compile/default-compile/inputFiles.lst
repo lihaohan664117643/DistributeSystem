@@ -1,7 +1,0 @@
-/home/hli/distributed_java_project/DistributeSystem/distribute-java-cluster/src/main/java/com/github/raftimpl/raft/example/server/ServerMain.java
-/home/hli/distributed_java_project/DistributeSystem/distribute-java-cluster/src/main/java/com/github/raftimpl/raft/example/client/ConcurrentClientMain.java
-/home/hli/distributed_java_project/DistributeSystem/distribute-java-cluster/src/main/java/com/github/raftimpl/raft/example/client/ClientMain_Test.java
-/home/hli/distributed_java_project/DistributeSystem/distribute-java-cluster/src/main/java/com/github/raftimpl/raft/example/server/service/ExampleProto.java
-/home/hli/distributed_java_project/DistributeSystem/distribute-java-cluster/src/main/java/com/github/raftimpl/raft/example/server/service/impl/ExampleServiceImpl.java
-/home/hli/distributed_java_project/DistributeSystem/distribute-java-cluster/src/main/java/com/github/raftimpl/raft/example/server/service/ExampleService.java
-/home/hli/distributed_java_project/DistributeSystem/distribute-java-cluster/src/main/java/com/github/raftimpl/raft/example/server/machine/LevelDBStateMachine.java
