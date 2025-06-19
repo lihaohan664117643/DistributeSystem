@@ -6,6 +6,7 @@ import com.github.raftimpl.raft.RaftNode;
 import com.github.raftimpl.raft.RaftOptions;
 import com.github.raftimpl.raft.StateMachine;
 import com.github.raftimpl.raft.example.server.machine.LevelDBStateMachine;
+import com.github.raftimpl.raft.example.server.machine.RocksDbStateMachine;
 import com.github.raftimpl.raft.example.server.service.ExampleService;
 import com.github.raftimpl.raft.example.server.service.impl.ExampleServiceImpl;
 import com.github.raftimpl.raft.proto.RaftProto;
@@ -52,10 +53,11 @@ public class ServerMain {
         RaftOptions.setMaxSegmentFileSize(1024 * 1024);
         // 应用状态机
         StateMachine stateMachine =
-        //    new HashMapStateMachine(RaftOptions.getDataDir());
-                new LevelDBStateMachine(RaftOptions.getDataDir());
-//                new BTreeStateMachine(RaftOptions.getDataDir());
-//                new BitCaskStateMachine(RaftOptions.getDataDir());
+                // new HashMapStateMachine(RaftOptions.getDataDir());
+                // new LevelDBStateMachine(RaftOptions.getDataDir());
+                new RocksDbStateMachine(RaftOptions.getDataDir());
+        // new BTreeStateMachine(RaftOptions.getDataDir());
+        // new BitCaskStateMachine(RaftOptions.getDataDir());
         // 初始化RaftNode
         RaftNode raftNode = new RaftNode(RaftOptions, serverList, localServer, stateMachine);
         // 注册Raft节点之间相互调用的服务
