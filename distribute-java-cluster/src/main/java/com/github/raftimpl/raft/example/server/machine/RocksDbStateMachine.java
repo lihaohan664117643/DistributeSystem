@@ -116,7 +116,7 @@ public class RocksDbStateMachine implements StateMachine {
             if (db == null) {
                 throw new BTreeException("database is closed, please wait for reopen");
             }
-            LOG.info("writing the data to the db")
+            LOG.info("writing the data to the db");
             ExampleProto.SetRequest request = ExampleProto.SetRequest.parseFrom(dataBytes);
             db.put(request.getKey().getBytes(), request.getValue().getBytes());
         } catch (Exception e) {
