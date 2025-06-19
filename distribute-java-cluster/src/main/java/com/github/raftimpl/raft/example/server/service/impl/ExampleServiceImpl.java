@@ -14,6 +14,7 @@ import com.googlecode.protobuf.format.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -104,7 +105,7 @@ public class ExampleServiceImpl implements ExampleService {
         byte[] column_family_bytes = request.getColumnFamily().getBytes();
         // 从Leader节点获取Read Index，并等待Read Index之前的日志条目应用到复制状态机
         if (raftNode.waitForLeaderCommitIndex()) {
-            byte[] valueBytes = stateMachine.get(keyBytes, column_family_bytes=column_family_bytes);
+            byte[] valueBytes = stateMachine.get(keyBytes, column_family_bytes);
             if (valueBytes != null) {
                 String value = new String(valueBytes);
                 responseBuilder.setValue(value);

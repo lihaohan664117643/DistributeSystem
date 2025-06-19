@@ -8,7 +8,9 @@ import com.github.raftimpl.raft.proto.RaftProto;
 import com.github.raftimpl.raft.storage.SegmentedLog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.rocksdb.RocksDB;
 import org.rocksdb.Options;
@@ -37,7 +39,7 @@ public class RocksDbStateMachine implements StateMachine {
     }
     public ColumnFamilyHandle getColumnFamilyHandle(String cfName) {
         if (db == null) {
-            throw new BTreeException("database is closed, please wait for reopen");
+            throw new RuntimeException("database is closed, please wait for reopen");
         }
 
         if (cfHandlesMap.containsKey(cfName)) {
