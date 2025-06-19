@@ -7,3 +7,5 @@
 **/log/**
 **/target/**
 .vscode
+.idea
+**/example\d/**
