@@ -33,6 +33,19 @@ public class RocksDbStateMachine implements StateMachine {
 
     public RocksDbStateMachine(String raftDataDir) {
         this.raftDataDir = raftDataDir;
+        this.cfHandlesMap = new HashMap<>();
+    }
+    public ColumnFamilyHandle getColumnFamilyHandle(String cfName) {
+        if (db == null) {
+            throw new BTreeException("database is closed, please wait for reopen");
+        }
+
+        if (cfHandlesMap.containsKey(cfName)) {
+            return cfHandlesMap.get(cfName);
+        }
+        ColumnFamilyHandle cfHandle = this.db.createColumnFamily(new ColumnFamilyDescriptor(cfName.getBytes()));
+        cfHandlesMap.put(cfName, cfHandle);
+        return cfHandle;
     }
 
     private RocksDB startDb(String db_path) {
@@ -75,7 +88,9 @@ public class RocksDbStateMachine implements StateMachine {
                 RaftProto.LogEntry entry = raftLog.getEntry(index);
                 if (entry.getType() == RaftProto.EntryType.ENTRY_TYPE_DATA) {
                     ExampleProto.SetRequest request = ExampleProto.SetRequest.parseFrom(entry.getData().toByteArray());
-                    tmpDB.put(request.getKey().getBytes(), request.getValue().getBytes());
+                    String cfName = new String(request.getColumnFamily().getBytes());
+                    ColumnFamilyHandle cfHandle = getColumnFamilyHandle(cfName);
+                    tmpDB.put(cfHandle, request.getKey().getBytes(), request.getValue().getBytes());
                 }
             }
         } catch (Exception e) {
@@ -120,7 +135,9 @@ public class RocksDbStateMachine implements StateMachine {
             }
             LOG.info("writing the data to the db");
             ExampleProto.SetRequest request = ExampleProto.SetRequest.parseFrom(dataBytes);
-            db.put(request.getKey().getBytes(), request.getValue().getBytes());
+            String cfName = new String(request.getColumnFamily().getBytes());
+            ColumnFamilyHandle cfHandle = getColumnFamilyHandle(cfName);
+            db.put(cfHandle, request.getKey().getBytes(), request.getValue().getBytes());
         } catch (Exception e) {
             LOG.warn("meet exception, msg={}", e.getMessage());
         }
@@ -129,17 +146,29 @@ public class RocksDbStateMachine implements StateMachine {
 
     @Override
     public byte[] get(byte[] dataBytes) {
+        return this.get(dataBytes, null);
+
+    }
+    @Override
+    public byte[] get(byte[] dataBytes, byte[] column_family_bytes) {
         byte[] result = null;
         try {
             if (db == null) {
                 throw new RocksDBException("database is closed, please wait for reopen");
             }
-            LOG.info("reading the data from the db");
-            result = db.get(dataBytes);
+            if (column_family_bytes == null) {
+                result = db.get(dataBytes);
+            } else {
+                String cfName = new String(column_family_bytes);
+                ColumnFamilyHandle cfHandle = this.getColumnFamilyHandle(cfName);
+                result = db.get(cfHandle, dataBytes);
+            }
+            String cfName = new String(column_family_bytes);
+            ColumnFamilyHandle cfHandle = this.getColumnFamilyHandle(cfName);
+            result = db.get(cfHandle, dataBytes);
         } catch (Exception e) {
-            LOG.warn("read leveldb exception, msg={}", e.getMessage());
+            LOG.warn("read rocksdb exception, msg={}", e.getMessage());
         }
         return result;
-
     }
 }

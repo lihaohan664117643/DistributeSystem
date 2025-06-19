@@ -28,4 +28,12 @@ public interface StateMachine {
      * @return Value的数据二进制
      */
     byte[] get(byte[] dataBytes);
+
+    /**
+     * 从状态机读取数据
+     * @param dataBytes Key的数据二进制
+     * @param column_family_bytes ColumnFamily的数据二进制
+     * @return Value的数据二进制
+     */
+    byte[] get(byte[] dataBytes, byte[] column_family_bytes);
 }

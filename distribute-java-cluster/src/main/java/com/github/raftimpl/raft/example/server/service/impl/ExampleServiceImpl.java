@@ -101,9 +101,10 @@ public class ExampleServiceImpl implements ExampleService {
         // Follower-read 非强一致性
         ExampleProto.GetResponse.Builder responseBuilder = ExampleProto.GetResponse.newBuilder();
         byte[] keyBytes = request.getKey().getBytes();
+        byte[] column_family_bytes = request.getColumnFamily().getBytes();
         // 从Leader节点获取Read Index，并等待Read Index之前的日志条目应用到复制状态机
         if (raftNode.waitForLeaderCommitIndex()) {
-            byte[] valueBytes = stateMachine.get(keyBytes);
+            byte[] valueBytes = stateMachine.get(keyBytes, column_family_bytes=column_family_bytes);
             if (valueBytes != null) {
                 String value = new String(valueBytes);
                 responseBuilder.setValue(value);
