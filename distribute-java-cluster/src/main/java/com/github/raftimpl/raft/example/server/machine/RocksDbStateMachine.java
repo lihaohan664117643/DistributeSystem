@@ -45,7 +45,7 @@ public class RocksDbStateMachine implements StateMachine {
             cfOptions.setWriteBufferSize(8 * 1024 * 1024); // 8MB写缓冲区
 
             // 创建RocksDB实例
-            String dbPath = "rocksdb-data";
+            String dbPath = db_path;
             List<ColumnFamilyDescriptor> cfDescriptors = new ArrayList<>();
             cfDescriptors.add(new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, cfOptions));
 
@@ -92,6 +92,8 @@ public class RocksDbStateMachine implements StateMachine {
             }
             String dataDir = raftDataDir + File.separator + "rocksdb_data";
             LOG.info("------------current data idr: {}", dataDir);
+            System.out.println("reading from the snapshot");
+            System.out.println(dataDir);
             File dataFile = new File(dataDir);
             if (dataFile.exists()) {
                 FileUtils.deleteDirectory(dataFile);
@@ -114,6 +116,7 @@ public class RocksDbStateMachine implements StateMachine {
             if (db == null) {
                 throw new BTreeException("database is closed, please wait for reopen");
             }
+            LOG.info("writing the data to the db")
             ExampleProto.SetRequest request = ExampleProto.SetRequest.parseFrom(dataBytes);
             db.put(request.getKey().getBytes(), request.getValue().getBytes());
         } catch (Exception e) {
@@ -129,6 +132,7 @@ public class RocksDbStateMachine implements StateMachine {
             if (db == null) {
                 throw new RocksDBException("database is closed, please wait for reopen");
             }
+            LOG.info("reading the data from the db")
             result = db.get(dataBytes);
         } catch (Exception e) {
             LOG.warn("read leveldb exception, msg={}", e.getMessage());
