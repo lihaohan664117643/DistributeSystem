@@ -45,9 +45,13 @@ public class RocksDbStateMachine implements StateMachine {
         if (cfHandlesMap.containsKey(cfName)) {
             return cfHandlesMap.get(cfName);
         }
-        ColumnFamilyHandle cfHandle = this.db.createColumnFamily(new ColumnFamilyDescriptor(cfName.getBytes()));
-        cfHandlesMap.put(cfName, cfHandle);
-        return cfHandle;
+        try {
+            ColumnFamilyHandle cfHandle = this.db.createColumnFamily(new ColumnFamilyDescriptor(cfName.getBytes()));
+            cfHandlesMap.put(cfName, cfHandle);
+            return cfHandle;
+        } catch (RocksDBException e) {
+            throw new RuntimeException("Failed to create column family: " + cfName, e);
+        }
     }
 
     private RocksDB startDb(String db_path) {
