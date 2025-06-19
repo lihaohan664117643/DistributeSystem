@@ -16,6 +16,7 @@ public class ClientMain_Test {
                 String ipport = "list://127.0.0.1:8051";
                 String key = "user";
                 String value = "test1";
+                String column_family = 'default'
 
                 // init rpc client
                 RpcClient rpcClient = new RpcClient(ipport);
@@ -27,7 +28,7 @@ public class ClientMain_Test {
                 System.out.print("I am here");
                 if (value != null) {
                         ExampleProto.SetRequest setRequest = ExampleProto.SetRequest.newBuilder()
-                                        .setKey(key).setValue(value).build();
+                                        .setKey(key).setValue(value).setColumnFamily(column_family).build();
                         ExampleProto.SetResponse setResponse = exampleService.set(setRequest);
                         System.out.printf("set request, key=%s value=%s response=%s\n",
                                         key, value, jsonFormat.printToString(setResponse));
@@ -35,7 +36,7 @@ public class ClientMain_Test {
                         // get
                         System.out.println("*************");
                         ExampleProto.GetRequest getRequest = ExampleProto.GetRequest.newBuilder()
-                                        .setKey(key).build();
+                                        .setKey(key).setColumnFamily(column_family).build();
                         System.out.println("*************");
                         ExampleProto.GetResponse getResponse = exampleService.get(getRequest);
                         System.out.printf("get request, key=%s, response=%s\n",

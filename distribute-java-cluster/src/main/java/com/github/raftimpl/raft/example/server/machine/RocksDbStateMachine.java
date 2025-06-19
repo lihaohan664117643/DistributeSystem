@@ -28,6 +28,7 @@ public class RocksDbStateMachine implements StateMachine {
     private static final Logger LOG = LoggerFactory.getLogger(RocksDbStateMachine.class);
     private RocksDB db;
     private final String raftDataDir;
+    private Map<String, ColumnFamilyHandle> cfHandlesMap;
 
     public RocksDbStateMachine(String raftDataDir) {
         this.raftDataDir = raftDataDir;
