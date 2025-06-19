@@ -91,6 +91,7 @@ public class RocksDbStateMachine implements StateMachine {
                 db = null;
             }
             String dataDir = raftDataDir + File.separator + "rocksdb_data";
+            LOG.info("------------current data idr: {}", dataDir);
             File dataFile = new File(dataDir);
             if (dataFile.exists()) {
                 FileUtils.deleteDirectory(dataFile);
