@@ -50,7 +50,7 @@ public class RocksDbStateMachine implements StateMachine {
             cfDescriptors.add(new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, cfOptions));
 
             List<ColumnFamilyHandle> columnFamilyHandles = new ArrayList<>();
-            RocksDB tmpDB = RocksDB.open(dbOptions, dbPath, cfDescriptors, columnFamilyHandles);
+            tmpDB = RocksDB.open(dbOptions, dbPath, cfDescriptors, columnFamilyHandles);
         } catch (RocksDBException e) {
             LOG.warn("Exception when trying to open the db, msg={}", e.getMessage());
         }
