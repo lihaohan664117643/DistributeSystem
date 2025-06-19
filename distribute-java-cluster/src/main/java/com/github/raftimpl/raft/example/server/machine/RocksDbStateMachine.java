@@ -132,7 +132,7 @@ public class RocksDbStateMachine implements StateMachine {
             if (db == null) {
                 throw new RocksDBException("database is closed, please wait for reopen");
             }
-            LOG.info("reading the data from the db")
+            LOG.info("reading the data from the db");
             result = db.get(dataBytes);
         } catch (Exception e) {
             LOG.warn("read leveldb exception, msg={}", e.getMessage());

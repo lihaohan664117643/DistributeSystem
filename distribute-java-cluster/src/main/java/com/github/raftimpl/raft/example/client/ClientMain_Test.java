@@ -14,8 +14,8 @@ public class ClientMain_Test {
                 // String ipPorts =
                 // "list://192.168.91.134:8051,192.168.91.134:8052,192.168.91.134:8053";
                 String ipport = "list://127.0.0.1:8051";
-                String key = "username123";
-                String value = null;
+                String key = "user";
+                String value = "test1";
 
                 // init rpc client
                 RpcClient rpcClient = new RpcClient(ipport);
