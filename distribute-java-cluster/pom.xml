@@ -71,32 +71,7 @@
                 </configuration>
             </plugin>
             
-            <!-- 添加 protobuf 编译插件 -->
-            <plugin>
-                <groupId>com.github.os72</groupId>
-                <artifactId>protoc-jar-maven-plugin</artifactId>
-                <version>3.11.4</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <protocVersion>3.11.4</protocVersion>
-                            <inputDirectories>
-                                <include>src/main/java/com/github/raftimpl/raft/example/server/service</include>
-                            </inputDirectories>
-                            <outputTargets>
-                                <outputTarget>
-                                    <type>java</type>
-                                    <outputDirectory>src/main/java/com/github/raftimpl/raft/example/server/service</outputDirectory>
-                                </outputTarget>
-                            </outputTargets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+        
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -129,11 +104,11 @@
             <version>1.9.0</version>
         </dependency>
         
-        <!-- 添加 protobuf 依赖 -->
+        添加 protobuf 依赖
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.11.4</version>
+            <version>3.25.1</version>
         </dependency>
         
         <dependency>
