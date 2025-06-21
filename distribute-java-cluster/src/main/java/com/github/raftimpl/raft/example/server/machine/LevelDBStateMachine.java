@@ -110,9 +110,7 @@ public class LevelDBStateMachine implements StateMachine {
             return get(dataBytes);
         }
         else{
-            throw new Exception("column_family_bytes is not null");
+            throw new RuntimeException("LevelDB does not support column families");
         }
-        byte[] result = null;
-        
     }
 }

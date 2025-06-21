@@ -169,9 +169,6 @@ public class RocksDbStateMachine implements StateMachine {
                 ColumnFamilyHandle cfHandle = this.getColumnFamilyHandle(cfName);
                 result = db.get(cfHandle, dataBytes);
             }
-            String cfName = new String(column_family_bytes);
-            ColumnFamilyHandle cfHandle = this.getColumnFamilyHandle(cfName);
-            result = db.get(cfHandle, dataBytes);
         } catch (Exception e) {
             LOG.warn("read rocksdb exception, msg={}", e.getMessage());
         }
