@@ -103,4 +103,16 @@ public class LevelDBStateMachine implements StateMachine {
         }
         return result;
     }
+
+    @Override
+    public byte[] get(byte[] dataBytes, byte[] column_family_bytes) {
+        if (column_family_bytes == null) {
+            return get(dataBytes);
+        }
+        else{
+            throw new Exception("column_family_bytes is not null");
+        }
+        byte[] result = null;
+        
+    }
 }
