@@ -16,7 +16,7 @@ public class ClientMain_Test {
                 String ipport = "list://127.0.0.1:8051";
                 String key = "user";
                 String value = "test1";
-                String column_family = 'default'
+                String column_family = "default";
 
                 // init rpc client
                 RpcClient rpcClient = new RpcClient(ipport);
