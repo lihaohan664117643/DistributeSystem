@@ -72,6 +72,7 @@ public class RocksDbStateMachine implements StateMachine {
 
             List<ColumnFamilyHandle> columnFamilyHandles = new ArrayList<>();
             tmpDB = RocksDB.open(dbOptions, dbPath, cfDescriptors, columnFamilyHandles);
+            this.cfHandlesMap.put("default", columnFamilyHandles.get(0));
         } catch (RocksDBException e) {
             LOG.warn("Exception when trying to open the db, msg={}", e.getMessage());
         }
@@ -163,7 +164,7 @@ public class RocksDbStateMachine implements StateMachine {
                 throw new RocksDBException("database is closed, please wait for reopen");
             }
             if (column_family_bytes == null) {
-                result = db.get(dataBytes);
+                result = db.get(this.cfHandlesMap.get("default"), dataBytes);
             } else {
                 String cfName = new String(column_family_bytes);
                 ColumnFamilyHandle cfHandle = this.getColumnFamilyHandle(cfName);
