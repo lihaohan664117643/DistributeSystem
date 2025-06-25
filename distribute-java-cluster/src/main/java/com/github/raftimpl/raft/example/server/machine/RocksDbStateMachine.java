@@ -39,15 +39,18 @@ public class RocksDbStateMachine implements StateMachine {
     }
     public ColumnFamilyHandle getColumnFamilyHandle(String cfName) {
         if (db == null) {
+            LOG.warn("database is closed, please wait for reopen, getColumnFamilyHandle function is called");
             throw new RuntimeException("database is closed, please wait for reopen");
         }
 
         if (cfHandlesMap.containsKey(cfName)) {
+            LOG.info("get the column family handle from the cache, cfName={}", cfName);
             return cfHandlesMap.get(cfName);
         }
         try {
             ColumnFamilyHandle cfHandle = this.db.createColumnFamily(new ColumnFamilyDescriptor(cfName.getBytes()));
             cfHandlesMap.put(cfName, cfHandle);
+            LOG.info("create the column family handle, cfName={}", cfName);
             return cfHandle;
         } catch (RocksDBException e) {
             throw new RuntimeException("Failed to create column family: " + cfName, e);
@@ -120,8 +123,9 @@ public class RocksDbStateMachine implements StateMachine {
                 RaftProto.LogEntry entry = raftLog.getEntry(index);
                 if (entry.getType() == RaftProto.EntryType.ENTRY_TYPE_DATA) {
                     ExampleProto.SetRequest request = ExampleProto.SetRequest.parseFrom(entry.getData().toByteArray());
-                    String cfName = new String(request.getColumnFamily().getBytes());
+                    String cfName = request.getColumnFamily();
                     ColumnFamilyHandle cfHandle = getColumnFamilyHandle(cfName);
+                    LOG.info("writing the data to the db, cfName={}, key={}, value={}", cfName, request.getKey(), request.getValue());
                     tmpDB.put(cfHandle, request.getKey().getBytes(), request.getValue().getBytes());
                 }
             }
@@ -163,12 +167,14 @@ public class RocksDbStateMachine implements StateMachine {
     public void applyData(byte[] dataBytes) {
         try {
             if (db == null) {
+                LOG.warn("database is closed, please wait for reopen");
                 throw new BTreeException("database is closed, please wait for reopen");
             }
             LOG.info("writing the data to the db");
             ExampleProto.SetRequest request = ExampleProto.SetRequest.parseFrom(dataBytes);
-            String cfName = new String(request.getColumnFamily().getBytes());
+            String cfName = request.getColumnFamily();
             ColumnFamilyHandle cfHandle = getColumnFamilyHandle(cfName);
+            LOG.info("writing the data to the db, cfName={}, key={}, value={}", cfName, request.getKey(), request.getValue());
             db.put(cfHandle, request.getKey().getBytes(), request.getValue().getBytes());
         } catch (Exception e) {
             LOG.warn("meet exception, msg={}", e.getMessage());
@@ -186,13 +192,16 @@ public class RocksDbStateMachine implements StateMachine {
         byte[] result = null;
         try {
             if (db == null) {
+                LOG.warn("database is closed, please wait for reopen, get function is called");
                 throw new RocksDBException("database is closed, please wait for reopen");
             }
             if (column_family_bytes == null) {
+                LOG.info("get the data from the db, cfName=default, key={}", new String(dataBytes));
                 result = db.get(this.cfHandlesMap.get("default"), dataBytes);
             } else {
                 String cfName = new String(column_family_bytes);
                 ColumnFamilyHandle cfHandle = this.getColumnFamilyHandle(cfName);
+                LOG.info("get the data from the db, cfName={}, key={}", cfName, new String(dataBytes));
                 result = db.get(cfHandle, dataBytes);
             }
         } catch (Exception e) {

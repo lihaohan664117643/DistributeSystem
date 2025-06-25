@@ -70,6 +70,7 @@ public class ExampleServiceImpl implements ExampleService {
         } else {
             // 数据同步写入raft集群
             byte[] data = request.toByteArray();
+            LOG.info("replicate the data to the db, cfName={}, key={}, value={}", request.getColumnFamily(), request.getKey(), request.getValue());
             boolean success = raftNode.replicate(data, RaftProto.EntryType.ENTRY_TYPE_DATA);
 
             responseBuilder.setSuccess(success);
@@ -105,6 +106,7 @@ public class ExampleServiceImpl implements ExampleService {
         byte[] column_family_bytes = request.getColumnFamily().getBytes();
         // 从Leader节点获取Read Index，并等待Read Index之前的日志条目应用到复制状态机
         if (raftNode.waitForLeaderCommitIndex()) {
+            LOG.info("get the data from the db, cfName={}, key={}, exampleServiceImpl", request.getColumnFamily(), request.getKey());
             byte[] valueBytes = stateMachine.get(keyBytes, column_family_bytes);
             if (valueBytes != null) {
                 String value = new String(valueBytes);
