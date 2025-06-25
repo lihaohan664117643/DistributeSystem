@@ -67,12 +67,37 @@ public class RocksDbStateMachine implements StateMachine {
 
             // 创建RocksDB实例
             String dbPath = db_path;
-            List<ColumnFamilyDescriptor> cfDescriptors = new ArrayList<>();
-            cfDescriptors.add(new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, cfOptions));
+            // 首先尝试列出已存在的column families
+            List<byte[]> existingCFs = RocksDB.listColumnFamilies(new Options(), db_path);
+            
+            if (existingCFs == null || existingCFs.isEmpty()) {
+                // 数据库不存在，创建新的数据库只包含默认column family
+                List<ColumnFamilyDescriptor> cfDescriptors = new ArrayList<>();
+                cfDescriptors.add(new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, cfOptions));
 
-            List<ColumnFamilyHandle> columnFamilyHandles = new ArrayList<>();
-            tmpDB = RocksDB.open(dbOptions, dbPath, cfDescriptors, columnFamilyHandles);
-            this.cfHandlesMap.put("default", columnFamilyHandles.get(0));
+                List<ColumnFamilyHandle> columnFamilyHandles = new ArrayList<>();
+                tmpDB = RocksDB.open(dbOptions, db_path, cfDescriptors, columnFamilyHandles);
+                
+                // 只缓存默认column family的句柄
+                this.cfHandlesMap.put("default", columnFamilyHandles.get(0));
+                LOG.info("RocksDB opened with default column family only (new database)");
+            } else {
+                // 数据库已存在，打开所有已存在的column families
+                List<ColumnFamilyDescriptor> cfDescriptors = new ArrayList<>();
+                for (byte[] cfName : existingCFs) {
+                    cfDescriptors.add(new ColumnFamilyDescriptor(cfName, cfOptions));
+                }
+
+                List<ColumnFamilyHandle> columnFamilyHandles = new ArrayList<>();
+                tmpDB = RocksDB.open(dbOptions, db_path, cfDescriptors, columnFamilyHandles);
+                
+                // 缓存所有已存在的column family句柄
+                for (int i = 0; i < existingCFs.size(); i++) {
+                    String cfName = new String(existingCFs.get(i));
+                    this.cfHandlesMap.put(cfName, columnFamilyHandles.get(i));
+                }
+                LOG.info("RocksDB opened with existing column families: {}", this.cfHandlesMap.keySet());
+            }
         } catch (RocksDBException e) {
             LOG.warn("Exception when trying to open the db, msg={}", e.getMessage());
         }
