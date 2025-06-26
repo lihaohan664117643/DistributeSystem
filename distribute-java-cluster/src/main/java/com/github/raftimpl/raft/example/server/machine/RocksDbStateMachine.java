@@ -93,7 +93,7 @@ public class RocksDbStateMachine implements StateMachine {
 
                 List<ColumnFamilyHandle> columnFamilyHandles = new ArrayList<>();
                 this.db = RocksDB.open(dbOptions, db_path, cfDescriptors, columnFamilyHandles);
-                
+                LOG.info("RocksDB opened with existing column families: {}", existingCFs);
                 // 缓存所有已存在的column family句柄
                 for (int i = 0; i < existingCFs.size(); i++) {
                     String cfName = new String(existingCFs.get(i));
