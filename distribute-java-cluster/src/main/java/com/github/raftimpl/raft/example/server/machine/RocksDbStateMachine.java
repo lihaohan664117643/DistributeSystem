@@ -79,7 +79,7 @@ public class RocksDbStateMachine implements StateMachine {
                 cfDescriptors.add(new ColumnFamilyDescriptor(RocksDB.DEFAULT_COLUMN_FAMILY, cfOptions));
 
                 List<ColumnFamilyHandle> columnFamilyHandles = new ArrayList<>();
-                tmpDB = RocksDB.open(dbOptions, db_path, cfDescriptors, columnFamilyHandles);
+                this.db = RocksDB.open(dbOptions, db_path, cfDescriptors, columnFamilyHandles);
                 
                 // 只缓存默认column family的句柄
                 this.cfHandlesMap.put("default", columnFamilyHandles.get(0));
@@ -92,7 +92,7 @@ public class RocksDbStateMachine implements StateMachine {
                 }
 
                 List<ColumnFamilyHandle> columnFamilyHandles = new ArrayList<>();
-                tmpDB = RocksDB.open(dbOptions, db_path, cfDescriptors, columnFamilyHandles);
+                this.db = RocksDB.open(dbOptions, db_path, cfDescriptors, columnFamilyHandles);
                 
                 // 缓存所有已存在的column family句柄
                 for (int i = 0; i < existingCFs.size(); i++) {
@@ -104,7 +104,7 @@ public class RocksDbStateMachine implements StateMachine {
         } catch (RocksDBException e) {
             LOG.warn("Exception when trying to open the db, msg={}", e.getMessage());
         }
-        return tmpDB;
+        return this.db;
     }
 
     @Override
