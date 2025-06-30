@@ -4,6 +4,7 @@ import btree4j.BTreeException;
 import com.github.raftimpl.raft.RaftNode;
 import com.github.raftimpl.raft.StateMachine;
 import com.github.raftimpl.raft.example.server.service.ExampleProto;
+import com.github.raftimpl.raft.example.server.util.SystemOutRedirector;
 import com.github.raftimpl.raft.proto.RaftProto;
 import com.github.raftimpl.raft.storage.SegmentedLog;
 
@@ -36,6 +37,8 @@ public class RocksDbStateMachine implements StateMachine {
     public RocksDbStateMachine(String raftDataDir) {
         this.raftDataDir = raftDataDir;
         this.cfHandlesMap = new HashMap<>();
+        // 启用 System.out 重定向到日志文件
+        SystemOutRedirector.redirectSystemOut();
     }
     public ColumnFamilyHandle getColumnFamilyHandle(String cfName) {
         if (db == null) {

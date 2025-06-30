@@ -23,9 +23,25 @@
             </Policies>
         </RollingFile>
 
+        <!-- System.out 重定向到日志文件 -->
+        <RollingFile name="SystemOutFile" fileName="logs/system_out.log" immediateFlush="true"
+                     filePattern="logs/system_out.log.%d{yyyy-MM-dd}" append="true">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [SYSTEM_OUT] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+
     </Appenders>
 
     <Loggers>
+        <!-- 专门用于捕获 System.out 的 Logger -->
+        <Logger name="SystemOut" level="info" additivity="false">
+            <AppenderRef ref="SystemOutFile"/>
+        </Logger>
+
         <Logger name="com.github.raftimpl.raft" level="info" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingFile"/>

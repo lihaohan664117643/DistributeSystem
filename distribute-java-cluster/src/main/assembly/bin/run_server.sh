@@ -23,7 +23,7 @@ CURRENT_NODE=$3
 JMX_PORT=18050
 GC_LOG=./logs/gc.log
 #jvm config
-JAVA_BASE_OPTS=" -Djava.awt.headless=true -Dfile.encoding=UTF-8 "
+JAVA_BASE_OPTS=" -Djava.awt.headless=true -Dfile.encoding=UTF-8 -DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector "
 
 #JAVA_JMX_OPTS=" -Dcom.sun.management.jmxremote \
 #-Dcom.sun.management.jmxremote.port=$JMX_PORT \
