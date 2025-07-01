@@ -59,6 +59,8 @@ public class ExampleServiceImpl implements ExampleService {
 
     @Override
     public ExampleProto.SetResponse set(ExampleProto.SetRequest request) {
+        LOG.info("I am here ExampleServiceImpl.set");
+        LOG.info("set request, request={}", jsonFormat.printToString(request));
         ExampleProto.SetResponse.Builder responseBuilder = ExampleProto.SetResponse.newBuilder();
         // 如果自己不是leader，将写请求转发给leader
         if (raftNode.getLeaderId() <= 0) {
